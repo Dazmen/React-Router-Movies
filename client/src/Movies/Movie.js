@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import axios from 'axios';
+import MovieCard from './MovieCard';
 
 const Movie = (props) => {
   const [movie, setMovie] = useState();
- 
+  const { id } = useParams();
   useEffect(() => {
-    const id = 1;
+    //useParams
+    // const [id, setId] = useState(0);
     // change ^^^ that line and grab the id from the URL
     // You will NEED to add a dependency array to this effect hook
 
        axios
         .get(`http://localhost:5000/api/movies/${id}`)
         .then(response => {
+          console.log('This is movies by ID', response)
           setMovie(response.data);
         })
         .catch(error => {
@@ -33,22 +37,10 @@ const Movie = (props) => {
   const { title, director, metascore, stars } = movie;
   return (
     <div className="save-wrapper">
-      <div className="movie-card">
-        <h2>{title}</h2>
-        <div className="movie-director">
-          Director: <em>{director}</em>
-        </div>
-        <div className="movie-metascore">
-          Metascore: <strong>{metascore}</strong>
-        </div>
-        <h3>Actors</h3>
-
-        {stars.map(star => (
-          <div key={star} className="movie-star">
-            {star}
-          </div>
-        ))}
-      </div>
+      <MovieCard title={title}
+      director={director}
+      metascore={metascore}
+      stars={stars}/>
       <div className="save-button">Save</div>
     </div>
   );
